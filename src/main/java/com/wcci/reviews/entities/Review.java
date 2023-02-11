@@ -2,6 +2,7 @@ package com.wcci.reviews.entities;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 public class Review {
@@ -17,7 +18,7 @@ public class Review {
     private String text;
 
     @ManyToMany(mappedBy = "reviews")
-    private Collection<HashTag> tags;
+    private Collection<HashTag> tags = new HashSet<>();
 
     // Required by JPA
     protected Review() {
