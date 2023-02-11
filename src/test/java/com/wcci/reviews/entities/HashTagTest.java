@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryTest {
+class HashTagTest {
     @Test
     public void test() {
-        final Category category = new Category("Romances");
-        assertEquals("Romances", category.getName());
+        final HashTag hashTag = new HashTag("Recommended");
+        assertEquals("Recommended", hashTag.getName());
     }
 
 }
