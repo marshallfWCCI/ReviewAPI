@@ -1,3 +1,26 @@
+# Usage
+
+GET
+/categories --> List all categories
+/categories/{id} --> List all books for a given category
+/reviews --> List all reviews
+/reviews/{review_id} --> The text of one review
+/reviews/{review_id}/tags --> Get the list of tags for a given review
+/tags --> Get the list of tags
+/tags/{tag_id} --> Get the list of reviews for a given tag_id
+
+POST
+/categories --> Create a new category
+/reviews --> Create a new review
+/reviews/{review_id}/tags --> Add a tag to an existing review
+
+UPDATE
+/reviews/{review_id} --> Update a review
+
+DELETE
+/reviews/{review_id}/tags/{tag_id} --> Remove a tag
+
+
 # Reviews API
 
 Opinions. You know the saying...everyone has one. And the Internet has made them easier to consume, or ignore.
