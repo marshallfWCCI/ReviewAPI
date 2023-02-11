@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ReviewTest {
     @Test
     public void testConstructor() {
-        final Category category = new Category("Movie");
+        final Category category = new Category("Movie", "Moving Images with Sound");
         final String title = "Princess Bride";
         final String author = "William Golding";
         final String text = "Entertaining on many levels";
@@ -21,7 +21,7 @@ class ReviewTest {
 
     @Test
     public void testTags() {
-        final Category category = new Category("Movie");
+        final Category category = new Category("Movie", "Moving Images with Sound");
         final String title = "Princess Bride";
         final String author = "William Golding";
         final String text = "Entertaining on many levels";
