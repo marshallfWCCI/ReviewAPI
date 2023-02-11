@@ -48,8 +48,7 @@ Acquisitions, Inc. requires:
     - Should describe a product in a few words or less, like Hashtags on social media.
     - A hashtag can have any number of reviews assigned to it.
 
-1. First understand the Entities as plain java objects. What's final and what's not. What fields should it have. What
-   are the relationships between fields in this class and fields in other classes?
+1. First understand the Entities as plain java objects. What's final and what's not. What fields should it have. What are the relationships between fields in this class and fields in other classes?
 2. Look at the requirements for REST endpoints and ensure that the entities expose the necessary behavior.
 3. Figure out how to map these entities to Database tables. (HARD)
 4. Link this altogether to REST endpoints (NOT HARD).
