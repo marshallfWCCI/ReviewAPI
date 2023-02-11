@@ -1,15 +1,31 @@
 package com.wcci.reviews.entities;
 
+import javax.persistence.*;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
+@Entity
 public class Review {
-    final private Category category;
-    final private String title;
-    final private String author;
-    final private String text;
-    final private Set<HashTag> tags = new HashSet<>();
+    @Id @GeneratedValue()
+    long id;
+
+    @ManyToOne
+    @JoinColumn(name = "category_name")
+    private Category category;
+
+    private String title;
+    private String author;
+    private String text;
+
+    @ManyToMany(mappedBy = "reviews")
+    private Collection<HashTag> tags;
+
+    // Required by JPA
+    protected Review() {
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public Review(final Category category, final String title, final String author, final String text) {
         this.category = category;
