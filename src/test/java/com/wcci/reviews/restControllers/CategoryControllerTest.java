@@ -126,13 +126,15 @@ public class CategoryControllerTest {
         mvc.perform(MockMvcRequestBuilders.post("/reviews/1/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
+        review.getTags().add(new HashTag(tag1));
+
         mvc.perform(MockMvcRequestBuilders.get("/tags").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new HashTag[]{new HashTag(tag1)})));
 
-//        mvc.perform(MockMvcRequestBuilders.get("/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{review})));
+        mvc.perform(MockMvcRequestBuilders.get("/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{review})));
     }
 
     private static String getJsonContent(Object o) throws JsonProcessingException {

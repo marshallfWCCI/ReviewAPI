@@ -26,7 +26,7 @@ POST
 /reviews --> Create a new review
 /reviews/{review_id}/tags --> Add a tag to an existing review
 
-UPDATE
+PUT
 /reviews/{review_id} --> Update a review
 
 DELETE
