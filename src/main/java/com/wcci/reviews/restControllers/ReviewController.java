@@ -56,4 +56,11 @@ public class ReviewController {
     public @ResponseBody Review postReview(final @RequestBody Review review) {
         return reviewRepository.save(review);
     }
+
+    @PutMapping("/reviews/{review_id}")
+    public void putReview(@PathVariable final long review_id, final @RequestBody Review review) throws Exception {
+        if (review.getId() != review_id)
+            throw new Exception("Review body has id " + review.getId() + " but url had id " + review_id);
+        reviewRepository.save(review);
+    }
 }

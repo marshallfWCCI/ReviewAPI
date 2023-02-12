@@ -17,7 +17,8 @@ public class HashTag {
     @JsonIgnore
     private LocalDateTime creationTime;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JsonIgnore
     private Collection<Review> reviews;
 
     // Required by JPA
@@ -35,5 +36,9 @@ public class HashTag {
 
     public LocalDateTime getCreationTime() {
         return creationTime;
+    }
+
+    public Collection<Review> getReviews() {
+        return reviews;
     }
 }

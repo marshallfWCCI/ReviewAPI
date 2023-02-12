@@ -114,5 +114,10 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(
                         new ObjectMapper().writeValueAsString(new HashTag[]{new HashTag(tag1)})));
+
+        mvc.perform(MockMvcRequestBuilders.get("/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(
+                        new ObjectMapper().writeValueAsString(new Review[]{review})));
     }
 }

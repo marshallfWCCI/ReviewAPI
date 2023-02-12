@@ -1,5 +1,15 @@
 # Usage
 
+curl -X POST http://localhost:8080/categories -H 'Content-Type: application/json' -d '{"name": "nonfiction", "description": "Purports to correspond to reality"}'
+curl -X GET http://localhost:8080/categories -H 'Content-Type: application/json'
+curl -X POST http://localhost:8080/reviews -H 'Content-Type: application/json' -d '{"title": "GEB", "author": "RH", "text": "Forwards and backwards"}'
+curl -X GET http://localhost:8080/reviews -H 'Content-Type: application/json'
+curl -X GET http://localhost:8080/reviews/1 -H 'Content-Type: application/json'
+curl -X PUT http://localhost:8080/reviews/1 -H 'Content-Type: application/json' -d '{"id" : 1, "title": "GEB", "author": "RH", "text": "Pulitzer"}'
+curl -X POST http://localhost:8080/reviews/1/tags/top10 -H 'Content-Type: application/json'
+curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
+curl -X POST http://localhost:8080/reviews/1/tags/top50 -H 'Content-Type: application/json'
+
 GET
 /categories --> List all categories
 /categories/{id} --> List all books for a given category
