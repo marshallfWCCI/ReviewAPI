@@ -1,6 +1,5 @@
 package com.wcci.reviews.restControllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wcci.reviews.entities.Category;
 import com.wcci.reviews.entities.Review;
@@ -78,12 +77,16 @@ public class CategoryControllerTest {
                 "Climate Change 2022: Impacts, Adaptation, and Vulnerability",
                 "IPCC",
                 "I did not think I could be more scared");
+        final String withoutId = new ObjectMapper().writeValueAsString(review);
+
+        review.setId(1);
 
         mvc.perform(MockMvcRequestBuilders.post("/reviews")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(review)))
-                .andExpect(status().isOk());
+                        .content(withoutId))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(new ObjectMapper().writeValueAsString(review)));
 
         final Review[] reviews = new Review[]{review};
         mvc.perform(MockMvcRequestBuilders.get("/reviews").accept(MediaType.APPLICATION_JSON))

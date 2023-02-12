@@ -9,7 +9,7 @@ import java.util.HashSet;
 @Entity
 public class Review {
     @Id @GeneratedValue()
-    long id;
+    private long id;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "category_name")
@@ -59,5 +59,13 @@ public class Review {
 
     public Collection<HashTag> getTags() {
         return tags;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(final long id) {
+        this.id = id;
     }
 }
