@@ -3,6 +3,7 @@ package com.wcci.reviews.entities;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity()
@@ -12,7 +13,7 @@ public class Category {
     private String description;
 
     @OneToMany()
-    private Collection<Review> reviews;
+    private Collection<Review> reviews = new ArrayList<>();
 
     public Category(final String categoryName, final String categoryDescription) {
         this.name = categoryName;
