@@ -7,6 +7,8 @@ import com.wcci.reviews.respositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class ReviewController {
     final ReviewRepository reviewRepository;
@@ -18,6 +20,11 @@ public class ReviewController {
     @GetMapping("/reviews")
     public Iterable<Review> getReviews() {
         return reviewRepository.findAll();
+    }
+
+    @GetMapping("/reviews/{review_id}")
+    public Optional<Review> getReviewByID(final @PathVariable long review_id) {
+        return reviewRepository.findById(review_id);
     }
 
     @PostMapping("/reviews")
