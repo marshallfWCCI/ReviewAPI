@@ -1,7 +1,9 @@
 package com.wcci.reviews.restControllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wcci.reviews.entities.Category;
+import com.wcci.reviews.entities.Review;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -66,5 +68,26 @@ public class CategoryControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(jsonContent));
+    }
+
+    @Test
+    public final void addReview() throws Exception {
+        final Category category = new Category("Climatology", "*Not* Happily-ever-after");
+
+        final Review review = new Review(category,
+                "Climate Change 2022: Impacts, Adaptation, and Vulnerability",
+                "IPCC",
+                "I did not think I could be more scared");
+
+        mvc.perform(MockMvcRequestBuilders.post("/reviews")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(review)))
+                .andExpect(status().isOk());
+
+        final Review[] reviews = new Review[]{review};
+        mvc.perform(MockMvcRequestBuilders.get("/reviews").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(new ObjectMapper().writeValueAsString(reviews)));
     }
 }

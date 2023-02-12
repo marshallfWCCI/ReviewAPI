@@ -1,5 +1,7 @@
 package com.wcci.reviews.entities;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,7 +11,7 @@ public class Review {
     @Id @GeneratedValue()
     long id;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "category_name")
     private Category category;
 
