@@ -2,6 +2,7 @@ package com.wcci.reviews.restControllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wcci.reviews.entities.Category;
+import com.wcci.reviews.entities.HashTag;
 import com.wcci.reviews.entities.Review;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,5 +97,22 @@ public class CategoryControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/reviews/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(new ObjectMapper().writeValueAsString(review)));
+
+        mvc.perform(MockMvcRequestBuilders.get("/reviews/1/tags").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("[]"));
+
+        mvc.perform(MockMvcRequestBuilders.get("/tags").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("[]"));
+
+        final String tag1 = "best_seller";
+        mvc.perform(MockMvcRequestBuilders.post("/reviews/1/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        mvc.perform(MockMvcRequestBuilders.get("/tags").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(
+                        new ObjectMapper().writeValueAsString(new HashTag[]{new HashTag(tag1)})));
     }
 }

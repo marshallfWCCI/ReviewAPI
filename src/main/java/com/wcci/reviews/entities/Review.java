@@ -1,10 +1,8 @@
 package com.wcci.reviews.entities;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Review {
@@ -20,7 +18,7 @@ public class Review {
     private String text;
 
     @ManyToMany(mappedBy = "reviews")
-    private Collection<HashTag> tags = new HashSet<>();
+    private Set<HashTag> tags = new HashSet<>();
 
     // Required by JPA
     protected Review() {
@@ -57,7 +55,7 @@ public class Review {
         tags.add(tag);
     }
 
-    public Collection<HashTag> getTags() {
+    public Set<HashTag> getTags() {
         return tags;
     }
 

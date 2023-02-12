@@ -1,5 +1,7 @@
 package com.wcci.reviews.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -12,6 +14,7 @@ public class HashTag {
     private String name;
 
     @Column(name="creation_time")
+    @JsonIgnore
     private LocalDateTime creationTime;
 
     @ManyToMany
