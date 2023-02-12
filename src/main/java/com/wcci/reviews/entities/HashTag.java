@@ -17,7 +17,7 @@ public class HashTag {
     @JsonIgnore
     private LocalDateTime creationTime;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "tags")
     @JsonIgnore
     private Collection<Review> reviews;
 

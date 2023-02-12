@@ -9,6 +9,8 @@ curl -X PUT http://localhost:8080/reviews/1 -H 'Content-Type: application/json' 
 curl -X POST http://localhost:8080/reviews/1/tags/top10 -H 'Content-Type: application/json'
 curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
 curl -X POST http://localhost:8080/reviews/1/tags/top50 -H 'Content-Type: application/json'
+curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
+curl -X GET http://localhost:8080/tags/top10 -H 'Content-Type: application/json'
 
 GET
 /categories --> List all categories

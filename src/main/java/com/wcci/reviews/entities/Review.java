@@ -17,7 +17,14 @@ public class Review {
     private String author;
     private String text;
 
-    @ManyToMany(mappedBy = "reviews")
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "review_tag",
+            joinColumns = @JoinColumn(name = "review_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_name")
+    )
     private Set<HashTag> tags = new HashSet<>();
 
     // Required by JPA
