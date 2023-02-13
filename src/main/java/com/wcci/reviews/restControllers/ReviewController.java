@@ -52,6 +52,21 @@ public class ReviewController {
         });
     }
 
+    @DeleteMapping("/reviews/{review_id}/tags/{tag_id}")
+    public void removeTagFromReview(
+            final @PathVariable long review_id,
+            final @PathVariable String tag_id) throws Exception {
+        final Optional<HashTag> tag = tagRepository.findById(tag_id);
+
+        if (tag.isEmpty()) throw new Exception("Unable to find tag: " + tag_id);
+
+        final Optional<Review> reviewByID = reviewRepository.findById(review_id);
+        reviewByID.map((final Review review) -> {
+            review.getTags().remove(tag);
+            return reviewRepository.save(review);
+        });
+    }
+
     @PostMapping("/reviews")
     public @ResponseBody Review postReview(final @RequestBody Review review) {
         return reviewRepository.save(review);

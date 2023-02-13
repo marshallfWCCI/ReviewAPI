@@ -29,8 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CategoryControllerTest {
     @Autowired
     private MockMvc mvc;
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @Test
     public void getCategories() throws Exception {
@@ -135,6 +133,12 @@ public class CategoryControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{review})));
+
+        mvc.perform(MockMvcRequestBuilders.delete("/reviews/1/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        mvc.perform(MockMvcRequestBuilders.get("/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{})));
     }
 
     private static String getJsonContent(Object o) throws JsonProcessingException {
