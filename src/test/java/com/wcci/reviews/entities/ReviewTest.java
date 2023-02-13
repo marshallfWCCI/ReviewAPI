@@ -12,9 +12,9 @@ class ReviewTest {
         final String title = "Princess Bride";
         final String author = "William Golding";
         final String text = "Entertaining on many levels";
-        final Review review = new Review(category, title, author, text);
+        final Review review = new Review(category.getName(), title, author, text);
 
-        assertEquals(category, review.getCategory());
+        assertEquals(category.getName(), review.getCategoryName());
         assertEquals(title, review.getTitle());
         assertEquals(author, review.getAuthor());
         assertEquals(text, review.getText());
@@ -26,7 +26,7 @@ class ReviewTest {
         final String title = "Princess Bride";
         final String author = "William Golding";
         final String text = "Entertaining on many levels";
-        final Review review = new Review(category, title, author, text);
+        final Review review = new Review(category.getName(), title, author, text);
 
         final HashTag tag1 = new HashTag("For kids");
         final HashTag tag2 = new HashTag("For adults");

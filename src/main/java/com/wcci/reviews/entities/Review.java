@@ -9,10 +9,7 @@ public class Review {
     @Id @GeneratedValue()
     private long id;
 
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "category_name")
-    private Category category;
-
+    private String category_name;
     private String title;
     private String author;
     private String text;
@@ -25,25 +22,29 @@ public class Review {
             joinColumns = @JoinColumn(name = "review_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_name")
     )
-    private Set<HashTag> tags = new HashSet<>();
+    final private Set<HashTag> tags = new HashSet<>();
+
+    public void removeTag(final HashTag tag) {
+        tags.remove(tag);
+    }
 
     // Required by JPA
     protected Review() {
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryName(final String category_name) {
+        this.category_name = category_name;
     }
 
-    public Review(final Category category, final String title, final String author, final String text) {
-        this.category = category;
+    public Review(final String category_name, final String title, final String author, final String text) {
+        this.category_name = category_name;
         this.title = title;
         this.author = author;
         this.text = text;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getCategoryName() {
+        return category_name;
     }
 
     public String getTitle() {

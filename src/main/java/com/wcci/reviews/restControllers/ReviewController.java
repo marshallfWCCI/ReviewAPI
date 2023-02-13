@@ -62,7 +62,7 @@ public class ReviewController {
 
         final Optional<Review> reviewByID = reviewRepository.findById(review_id);
         reviewByID.map((final Review review) -> {
-            review.getTags().remove(tag);
+            review.removeTag(tag.get());
             return reviewRepository.save(review);
         });
     }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wcci.reviews.entities.Category;
 import com.wcci.reviews.entities.HashTag;
 import com.wcci.reviews.entities.Review;
-import com.wcci.reviews.respositories.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -76,7 +75,7 @@ public class CategoryControllerTest {
     public final void addReview() throws Exception {
         final Category category = new Category("Climatology", "*Not* Happily-ever-after");
 
-        final Review review = new Review(category,
+        final Review review = new Review(category.getName(),
                 "Climate Change 2022: Impacts, Adaptation, and Vulnerability",
                 "IPCC",
                 "I did not think I could be more scared");
@@ -100,7 +99,7 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)));
 
-        review.setCategory(category);
+        review.setCategoryName(category.getName());
 
         mvc.perform(MockMvcRequestBuilders.put("/reviews/1")
                         .accept(MediaType.APPLICATION_JSON)

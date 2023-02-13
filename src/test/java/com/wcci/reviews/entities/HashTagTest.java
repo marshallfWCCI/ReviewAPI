@@ -23,4 +23,12 @@ class HashTagTest {
         assertFalse(before.isAfter(hashTag.getCreationTime()));
         assertFalse(hashTag.getCreationTime().isAfter(after));
     }
+
+    @Test
+    public void testEquality() {
+        final HashTag hashTag1 = new HashTag("Recommended");
+        final HashTag hashTag2 = new HashTag("Recommended");
+
+        assertEquals(hashTag1, hashTag2);
+    }
 }
