@@ -5,6 +5,8 @@ import com.wcci.reviews.respositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class CategoryController {
     final CategoryRepository categoryRepository;
@@ -21,5 +23,10 @@ public class CategoryController {
     @PostMapping("/categories")
     public @ResponseBody Category postCategory(final @RequestBody Category category) {
         return categoryRepository.save(category);
+    }
+
+    @DeleteMapping("/categories/{category_id}")
+    public @ResponseBody void deleteCategory(@PathVariable final String category_id) {
+        categoryRepository.findById(category_id).ifPresent((category) -> categoryRepository.delete(category));
     }
 }

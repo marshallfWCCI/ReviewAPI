@@ -63,12 +63,16 @@ public class CategoryControllerTest {
                         .content(getJsonContent(category2)))
                 .andExpect(status().isOk());
 
-        final Category[] categories = new Category[]{category1, category2};
-        final String jsonContent = getJsonContent(categories);
+        mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category1, category2})));
+
+        mvc.perform(MockMvcRequestBuilders.delete("/categories/" + category1.getName()).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
         mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(jsonContent));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category2})));
     }
 
     @Test

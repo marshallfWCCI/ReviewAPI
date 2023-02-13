@@ -26,8 +26,6 @@ public class TagController {
 
     @GetMapping("/tags/{tag_id}")
     public Optional<Iterable<Review>> getReviewsForTag(@PathVariable final String tag_id) {
-        Optional<HashTag> perhapsTag = hashTagRepository.findById(tag_id);
-        Optional<Iterable<Review>> reviews = perhapsTag.map((tag) -> tag.getReviews());
-        return reviews;
+        return hashTagRepository.findById(tag_id).map((tag) -> tag.getReviews());
     }
 }
