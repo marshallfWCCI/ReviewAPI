@@ -10,6 +10,7 @@ import java.util.Collection;
 public class Category {
     @Id
     private String name;
+
     private String description;
 
     @OneToMany()

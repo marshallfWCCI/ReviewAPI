@@ -1,6 +1,7 @@
 package com.wcci.reviews.entities;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ public class Review {
     private String category_name;
     private String title;
     private String author;
+    @Lob
     private String text;
 
     @ManyToMany(cascade = {
@@ -19,10 +21,10 @@ public class Review {
             CascadeType.MERGE
     })
     @JoinTable(name = "review_tag",
-            joinColumns = @JoinColumn(name = "review_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_name")
+            joinColumns = @JoinColumn(name = "review_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_name", referencedColumnName = "name")
     )
-    final private Set<HashTag> tags = new HashSet<>();
+    private Collection<HashTag> tags = new HashSet<>();
 
     public void removeTag(final HashTag tag) {
         tags.remove(tag);
@@ -63,7 +65,7 @@ public class Review {
         tags.add(tag);
     }
 
-    public Set<HashTag> getTags() {
+    public Collection<HashTag> getTags() {
         return tags;
     }
 

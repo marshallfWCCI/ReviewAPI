@@ -11,10 +11,8 @@ import java.util.Objects;
 @Table(name = "hashtags")
 public class HashTag {
     @Id
-    @Column(name="name")
     private String name;
 
-    @Column(name="creation_time")
     @JsonIgnore
     private LocalDateTime creationTime;
 
@@ -22,7 +20,6 @@ public class HashTag {
     @JsonIgnore
     private Collection<Review> reviews;
 
-    // Required by JPA
     protected HashTag() {
     }
 
