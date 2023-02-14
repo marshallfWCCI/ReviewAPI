@@ -3,7 +3,6 @@ package com.wcci.reviews.entities;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Review {

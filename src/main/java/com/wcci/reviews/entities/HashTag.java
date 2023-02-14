@@ -2,7 +2,10 @@ package com.wcci.reviews.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
