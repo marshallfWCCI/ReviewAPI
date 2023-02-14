@@ -1,13 +1,12 @@
 package com.wcci.reviews.restControllers;
 
-import com.wcci.reviews.entities.Category;
 import com.wcci.reviews.entities.HashTag;
 import com.wcci.reviews.entities.Review;
-import com.wcci.reviews.respositories.CategoryRepository;
 import com.wcci.reviews.respositories.HashTagRepository;
-import com.wcci.reviews.respositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
