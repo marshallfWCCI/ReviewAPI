@@ -79,7 +79,7 @@ public class CategoryControllerTest {
     public final void addReview() throws Exception {
         final Category category = new Category("Climatology", "*Not* Happily-ever-after");
 
-        final Review review = new Review(category.getName(),
+        final Review review = new Review(category,
                 "Climate Change 2022: Impacts, Adaptation, and Vulnerability",
                 "IPCC",
                 "I did not think I could be more scared");
@@ -103,7 +103,7 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)));
 
-        review.setCategoryName(category.getName());
+        review.setCategory(category);
 
         mvc.perform(MockMvcRequestBuilders.put("/reviews/1")
                         .accept(MediaType.APPLICATION_JSON)

@@ -10,7 +10,9 @@ public class Review {
     @Id @GeneratedValue()
     private long id;
 
-    private String category_name;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_name")
+    private Category category;
 
     private String title;
     private String author;
@@ -22,6 +24,14 @@ public class Review {
     @JoinTable()
     private Collection<HashTag> tags = new HashSet<>();
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public void removeTag(final HashTag tag) {
         tags.remove(tag);
     }
@@ -30,19 +40,11 @@ public class Review {
     protected Review() {
     }
 
-    public void setCategoryName(final String category_name) {
-        this.category_name = category_name;
-    }
-
-    public Review(final String category_name, final String title, final String author, final String text) {
-        this.category_name = category_name;
+    public Review(final Category category, final String title, final String author, final String text) {
+        this.category = category;
         this.title = title;
         this.author = author;
         this.text = text;
-    }
-
-    public String getCategoryName() {
-        return category_name;
     }
 
     public String getTitle() {
