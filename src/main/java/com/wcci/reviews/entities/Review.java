@@ -13,17 +13,12 @@ public class Review {
     private String category_name;
     private String title;
     private String author;
+
     @Lob
     private String text;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "review_tag",
-            joinColumns = @JoinColumn(name = "review_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_name", referencedColumnName = "name")
-    )
+    @ManyToMany()
+    @JoinTable()
     private Collection<HashTag> tags = new HashSet<>();
 
     public void removeTag(final HashTag tag) {
