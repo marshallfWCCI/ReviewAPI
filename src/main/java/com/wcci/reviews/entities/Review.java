@@ -13,7 +13,6 @@ public class Review {
 
     @ManyToOne()
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
-    @JoinColumn(name = "category_name")
     private Category category;
 
     private String title;
