@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Entity
+@Table(indexes = @Index(columnList = "category_name"))
 public class Review {
     @Id @GeneratedValue()
     private long id;
 
     private String category_name;
+
     private String title;
     private String author;
 
