@@ -1,5 +1,7 @@
 package com.wcci.reviews.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -14,7 +16,8 @@ public class Category {
 
     private String description;
 
-    @OneToMany()
+    @OneToMany(mappedBy="category")
+    @JsonIgnore
     private Collection<Review> reviews = new HashSet<>();
 
     public Category(final String categoryName, final String categoryDescription) {

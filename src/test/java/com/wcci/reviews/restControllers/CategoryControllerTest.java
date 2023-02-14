@@ -143,9 +143,15 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{})));
 
+        review.removeTag(new HashTag(tag1));
+
         mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category})));
+
+        mvc.perform(MockMvcRequestBuilders.get("/categories/" + category.getName()).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{review})));
     }
 
     private static String getJsonContent(Object o) throws JsonProcessingException {

@@ -1,16 +1,18 @@
 package com.wcci.reviews.entities;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 
 @Entity
-@Table(indexes = @Index(columnList = "category_name"))
 public class Review {
     @Id @GeneratedValue()
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
+    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     @JoinColumn(name = "category_name")
     private Category category;
 
