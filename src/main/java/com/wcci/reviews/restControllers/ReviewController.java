@@ -68,7 +68,7 @@ public class ReviewController {
     }
 
     @PostMapping("/reviews")
-    public @ResponseBody Review postReview(final @RequestBody Review review) {
+    public Review postReview(final @RequestBody Review review) {
         return reviewRepository.save(review);
     }
 
