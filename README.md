@@ -14,7 +14,7 @@ curl -X GET http://localhost:8080/tags/top10 -H 'Content-Type: application/json'
 
 GET
 /categories --> List all categories
-/categories/{id} --> List all books for a given category
+/categories/{category_name} --> List all books for a given category
 /reviews --> List all reviews
 /reviews/{review_id} --> The text of one review
 /reviews/{review_id}/tags --> Get the list of tags for a given review
@@ -23,7 +23,7 @@ GET
 
 POST
 /categories --> Create a new category
-/reviews --> Create a new review
+/reviews --> Create a new review and return that review with the id field populated with the actual id.
 /reviews/{review_id}/tags --> Add a tag to an existing review
 
 PUT
@@ -31,6 +31,7 @@ PUT
 
 DELETE
 /reviews/{review_id}/tags/{tag_id} --> Remove a tag
+/categories/{category_name} --> Remove a category
 
 
 # Reviews API

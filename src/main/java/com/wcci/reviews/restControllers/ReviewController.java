@@ -5,7 +5,9 @@ import com.wcci.reviews.entities.Review;
 import com.wcci.reviews.respositories.HashTagRepository;
 import com.wcci.reviews.respositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -27,8 +29,11 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/{review_id}")
-    public Optional<Review> getReviewByID(final @PathVariable long review_id) {
-        return reviewRepository.findById(review_id);
+    public Review getReviewByID(final @PathVariable long review_id) {
+        return reviewRepository.findById(review_id).orElseGet(() -> {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Cannot find review " + review_id);
+        });
     }
 
     @GetMapping("/reviews/{review_id}/tags")

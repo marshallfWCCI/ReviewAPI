@@ -41,8 +41,9 @@ public class CategoryControllerTest {
         final Category category = new Category("Romance", "Happily-ever-after");
 
         mvc.perform(MockMvcRequestBuilders.post("/categories")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON) // I'm expecting JSON back because I'm a program and want recordized date
+                        .contentType(MediaType.APPLICATION_JSON // I'm a program and sending you JSON-encoded data
+                        )
                         .content(getJsonContent(category)))
                 .andExpect(status().isOk());
     }
@@ -52,27 +53,44 @@ public class CategoryControllerTest {
         final Category category1 = new Category("Romance", "Happily-ever-after");
         final Category category2 = new Category("Climatology", "*Not* Happily-ever-after");
 
+        // If I do an http POST to /categories and pass in {"name": "Romance", "description": "Happily-ever-after"}
+        // then I expect to get an "OK" back.
         mvc.perform(MockMvcRequestBuilders.post("/categories")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonContent(category1)))
                 .andExpect(status().isOk());
+
+        // If I do an http POST to /categories and pass in {"name": "Climatology", "description": "Not Happily-ever-after"}
+        // then I expect to get an "OK" back.
         mvc.perform(MockMvcRequestBuilders.post("/categories")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonContent(category2)))
                 .andExpect(status().isOk());
 
+        // At this point, we have two records in MySQL (or something similar)
+        // If I do an http GET to /categories, and pass in nothing else, I expect to get
+        // [{"name": "Romance", "description": "Happily-ever-after"},
+        //  {"name": "Climatology", "description": "Not Happily-ever-after"}]
         mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category1, category2})));
 
+        // And then if I do an http DELETE to /categories/Romance, I expect to get an OK back
         mvc.perform(MockMvcRequestBuilders.delete("/categories/" + category1.getName()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
+        // If I do an http GET to /categories, and pass in nothing else, I expect to get
+        // [{"name": "Climatology", "description": "Not Happily-ever-after"}]
         mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category2})));
+    }
+
+    @Test public final void failures() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/reviews/99").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test
