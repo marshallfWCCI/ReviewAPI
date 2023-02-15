@@ -28,12 +28,12 @@ public class ReviewController {
         return reviewRepository.findAll();
     }
 
+    // Hey spring, if you see an endpoint like /reviews/anynumber, use this code
     @GetMapping("/reviews/{review_id}")
     public Review getReviewByID(final @PathVariable long review_id) {
         return reviewRepository.findById(review_id)
                 .orElseGet(() -> {
-                    throw new ResponseStatusException(
-                            HttpStatus.NOT_FOUND, "Cannot find review " + review_id);
+                    throw new ResponseStatusException( HttpStatus.NOT_FOUND, "Cannot find review " + review_id);
                 });
     }
 
@@ -83,5 +83,16 @@ public class ReviewController {
         if (review.getId() != review_id)
             throw new Exception("Review body has id " + review.getId() + " but url had id " + review_id);
         reviewRepository.save(review);
+    }
+
+    @DeleteMapping("/reviews/{review_id}")
+    public void deleteReview(@PathVariable final long review_id) {
+        reviewRepository.findById(review_id)
+                .ifPresentOrElse(
+                        (review) -> reviewRepository.delete(review),
+                        () -> {
+                            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                    "Cannot delete nonexistent review " + review_id);
+                        });
     }
 }

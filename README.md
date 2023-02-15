@@ -15,8 +15,8 @@ curl -X GET http://localhost:8080/tags/top10 -H 'Content-Type: application/json'
 GET
 /categories --> List all categories
 /categories/{category_name} --> List all books for a given category
-/reviews --> List all reviews
-/reviews/{review_id} --> The text of one review
+/reviews --> List all reviews (QUESTION: is this too much???)
+/reviews/{review_id} --> The text of a single review
 /reviews/{review_id}/tags --> Get the list of tags for a given review
 /tags --> Get the list of tags
 /tags/{tag_id} --> Get the list of reviews for a given tag_id
@@ -32,6 +32,15 @@ PUT
 DELETE
 /reviews/{review_id}/tags/{tag_id} --> Remove a tag
 /categories/{category_name} --> Remove a category
+
+Typical use:
+POST to /reviews
+POST to /reviews/1/tags/top40
+POST to /reviews/1/tags/englishfiction
+GET from /reviews/1/tags
+GET from /tags/top40 --> give you all matching reviews
+DELETE to /reviews/1/tags/englishfiction --> oh, I made a mistake
+
 
 
 # Reviews API

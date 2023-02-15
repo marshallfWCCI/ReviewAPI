@@ -8,15 +8,19 @@ import java.util.HashSet;
 
 @Entity
 public class Review {
+
+    // This is a number which starts at 1 for the first review, and then the database
+    // increases for every following review
     @Id @GeneratedValue()
     private long id;
+
+
+    private String title;
+    private String author;
 
     @ManyToOne()
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     private Category category;
-
-    private String title;
-    private String author;
 
     @Lob
     private String text;

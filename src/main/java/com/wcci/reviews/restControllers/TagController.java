@@ -4,11 +4,11 @@ import com.wcci.reviews.entities.HashTag;
 import com.wcci.reviews.entities.Review;
 import com.wcci.reviews.respositories.HashTagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class TagController {
@@ -24,7 +24,11 @@ public class TagController {
     }
 
     @GetMapping("/tags/{tag_id}")
-    public Optional<Iterable<Review>> getReviewsForTag(@PathVariable final String tag_id) {
-        return hashTagRepository.findById(tag_id).map((tag) -> tag.getReviews());
+    public Iterable<Review> getReviewsForTag(@PathVariable final String tag_id) {
+        return hashTagRepository.findById(tag_id)
+                .map((tag) -> tag.getReviews())
+                .orElseGet(() -> {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot find tag " + tag_id);
+                });
     }
 }

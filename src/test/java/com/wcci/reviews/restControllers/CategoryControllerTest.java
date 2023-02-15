@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // reset the database for each test
 @AutoConfigureMockMvc
 public class CategoryControllerTest {
     @Autowired
@@ -31,6 +31,8 @@ public class CategoryControllerTest {
 
     @Test
     public void getCategories() throws Exception {
+        // You *can* expect multiple things
+        // In this case I expect a list of zero categories.
         mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("[]")));
@@ -40,10 +42,14 @@ public class CategoryControllerTest {
     public void addCategory() throws Exception {
         final Category category = new Category("Romance", "Happily-ever-after");
 
+        // If I perform a POST against /categories
+        // and I telling Spring that I want JSON-format back
+        // and I telling Spring that I'm giving it JSON-formatted text
+        // and pass in {"name": "Romance", "description": "..."}
+        // then I'll get an HTTP OK (code 200) in response.
         mvc.perform(MockMvcRequestBuilders.post("/categories")
                         .accept(MediaType.APPLICATION_JSON) // I'm expecting JSON back because I'm a program and want recordized date
-                        .contentType(MediaType.APPLICATION_JSON // I'm a program and sending you JSON-encoded data
-                        )
+                        .contentType(MediaType.APPLICATION_JSON) // I'm a program and sending you JSON-encoded data
                         .content(getJsonContent(category)))
                 .andExpect(status().isOk());
     }
@@ -88,10 +94,18 @@ public class CategoryControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category2})));
     }
 
-    @Test public final void failures() throws Exception {
+    @Test
+    public final void failures() throws Exception {
+        // Nonexistent entities return 404 "NOT FOUND" errors
         mvc.perform(MockMvcRequestBuilders.get("/reviews/99").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
         mvc.perform(MockMvcRequestBuilders.get("/categories/99").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        mvc.perform(MockMvcRequestBuilders.get("/tags/99").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        mvc.perform(MockMvcRequestBuilders.delete("/categories/99").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        mvc.perform(MockMvcRequestBuilders.delete("/reviews/99").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
@@ -107,6 +121,7 @@ public class CategoryControllerTest {
 
         review.setId(1);
 
+        // Create a review
         mvc.perform(MockMvcRequestBuilders.post("/reviews")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,17 +129,19 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)));
 
+        // And then find it
         final Review[] reviews = new Review[]{review};
         mvc.perform(MockMvcRequestBuilders.get("/reviews").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(reviews)));
 
+        // And find it by number
         mvc.perform(MockMvcRequestBuilders.get("/reviews/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)));
 
+        // And then I can use PUT to change the review
         review.setCategory(category);
-
         mvc.perform(MockMvcRequestBuilders.put("/reviews/1")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -135,6 +152,7 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)));
 
+        // The review starts with no tags
         mvc.perform(MockMvcRequestBuilders.get("/reviews/1/tags").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("[]"));
