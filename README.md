@@ -1,45 +1,45 @@
-# Usage
+# Sample usage from the bash shell
 
-curl -X POST http://localhost:8080/categories -H 'Content-Type: application/json' -d '{"name": "nonfiction", "description": "Purports to correspond to reality"}'
-curl -X GET http://localhost:8080/categories -H 'Content-Type: application/json'
-curl -X POST http://localhost:8080/reviews -H 'Content-Type: application/json' -d '{"title": "GEB", "author": "RH", "text": "Forwards and backwards"}'
-curl -X GET http://localhost:8080/reviews -H 'Content-Type: application/json'
-curl -X GET http://localhost:8080/reviews/1 -H 'Content-Type: application/json'
-curl -X PUT http://localhost:8080/reviews/1 -H 'Content-Type: application/json' -d '{"id" : 1, "title": "GEB", "author": "RH", "text": "Pulitzer"}'
-curl -X POST http://localhost:8080/reviews/1/tags/top10 -H 'Content-Type: application/json'
-curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
-curl -X POST http://localhost:8080/reviews/1/tags/top50 -H 'Content-Type: application/json'
-curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
-curl -X GET http://localhost:8080/tags/top10 -H 'Content-Type: application/json'
+* curl -X POST http://localhost:8080/categories -H 'Content-Type: application/json' -d '{"name": "nonfiction", "description": "Purports to correspond to reality"}'
+* curl -X GET http://localhost:8080/categories -H 'Content-Type: application/json'
+* curl -X POST http://localhost:8080/reviews -H 'Content-Type: application/json' -d '{"title": "GEB", "author": "RH", "text": "Forwards and backwards"}'
+* curl -X GET http://localhost:8080/reviews -H 'Content-Type: application/json'
+* curl -X GET http://localhost:8080/reviews/1 -H 'Content-Type: application/json'
+* curl -X PUT http://localhost:8080/reviews/1 -H 'Content-Type: application/json' -d '{"id" : 1, "title": "GEB", "author": "RH", "text": "Pulitzer"}'
+* curl -X POST http://localhost:8080/reviews/1/tags/top10 -H 'Content-Type: application/json'
+* curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
+* curl -X POST http://localhost:8080/reviews/1/tags/top50 -H 'Content-Type: application/json'
+* curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
+* curl -X GET http://localhost:8080/tags/top10 -H 'Content-Type: application/json'
 
-GET
-/categories --> List all categories
-/categories/{category_name} --> List all books for a given category
-/reviews --> List all reviews (QUESTION: is this too much???)
-/reviews/{review_id} --> The text of a single review
-/reviews/{review_id}/tags --> Get the list of tags for a given review
-/tags --> Get the list of tags
-/tags/{tag_id} --> Get the list of reviews for a given tag_id
+Endpoints
+* GET
+  * /categories --> List all categories
+  * /categories/{category_name} --> List all books for a given category
+  * /reviews --> List all reviews (QUESTION: is this too much???)
+  * /reviews/{review_id} --> The text of a single review
+  * /reviews/{review_id}/tags --> Get the list of tags for a given review
+  * /tags --> Get the list of tags
+  * /tags/{tag_id} --> Get the list of reviews for a given tag_id
+* POST
+  * /categories --> Create a new category
+  * /reviews --> Create a new review and return that review with the id field populated with the actual id.
+  * /reviews/{review_id}/tags --> Add a tag to an existing review
 
-POST
-/categories --> Create a new category
-/reviews --> Create a new review and return that review with the id field populated with the actual id.
-/reviews/{review_id}/tags --> Add a tag to an existing review
+* PUT
+  * /reviews/{review_id} --> Update a review
 
-PUT
-/reviews/{review_id} --> Update a review
+* DELETE
+  * /reviews/{review_id}/tags/{tag_id} --> Remove a tag
+  * /categories/{category_name} --> Remove a category
 
-DELETE
-/reviews/{review_id}/tags/{tag_id} --> Remove a tag
-/categories/{category_name} --> Remove a category
-
-Typical use:
-POST to /reviews
-POST to /reviews/1/tags/top40
-POST to /reviews/1/tags/englishfiction
-GET from /reviews/1/tags
-GET from /tags/top40 --> give you all matching reviews
-DELETE to /reviews/1/tags/englishfiction --> oh, I made a mistake
+Typical use-case:
+* POST to /reviews
+* POST to /reviews/1/tags/top40
+* POST to /reviews/1/tags/englishfiction
+* GET from /reviews/1/tags
+* GET from /tags/top40 --> give you all matching reviews
+* DELETE to /reviews/1/tags/englishfiction --> oh, I made a mistake
 
 
 
