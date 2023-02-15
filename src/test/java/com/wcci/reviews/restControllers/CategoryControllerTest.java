@@ -91,6 +91,8 @@ public class CategoryControllerTest {
     @Test public final void failures() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/reviews/99").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+        mvc.perform(MockMvcRequestBuilders.get("/categories/99").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test

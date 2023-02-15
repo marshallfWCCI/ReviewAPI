@@ -4,10 +4,11 @@ import com.wcci.reviews.entities.Category;
 import com.wcci.reviews.entities.Review;
 import com.wcci.reviews.respositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @RestController
 public class CategoryController {
@@ -28,8 +29,13 @@ public class CategoryController {
     }
 
     @GetMapping("/categories/{category_id}")
-    public Optional<Collection<Review>> getCategory(@PathVariable final String category_id) {
-        return categoryRepository.findById(category_id).map((category) -> category.getReviews());
+    public Collection<Review> getCategory(@PathVariable final String category_id) {
+        return categoryRepository.findById(category_id)
+                .map((category) -> category.getReviews())
+                .orElseGet(() -> {
+                    throw new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "Cannot find category " + category_id);
+                });
     }
 
     @DeleteMapping("/categories/{category_id}")

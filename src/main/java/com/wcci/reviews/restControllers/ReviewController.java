@@ -30,10 +30,11 @@ public class ReviewController {
 
     @GetMapping("/reviews/{review_id}")
     public Review getReviewByID(final @PathVariable long review_id) {
-        return reviewRepository.findById(review_id).orElseGet(() -> {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Cannot find review " + review_id);
-        });
+        return reviewRepository.findById(review_id)
+                .orElseGet(() -> {
+                    throw new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "Cannot find review " + review_id);
+                });
     }
 
     @GetMapping("/reviews/{review_id}/tags")
