@@ -9,6 +9,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 public class ReviewsApplication {
 
 	public static void main(String[] args) {
+		// Hey, SpringApplication, do the needful for everything in the ReviewsApplication class
 		SpringApplication.run(ReviewsApplication.class, args);
 	}
 

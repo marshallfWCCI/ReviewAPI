@@ -1,20 +1,22 @@
 # Sample usage from the bash shell
 
+* // Stuff that is after the `-d` shows up as `@RequestBody` in a controller
 * curl -X POST http://localhost:8080/categories -H 'Content-Type: application/json' -d '{"name": "nonfiction", "description": "Purports to correspond to reality"}'
 * curl -X GET http://localhost:8080/categories -H 'Content-Type: application/json'
 * curl -X POST http://localhost:8080/reviews -H 'Content-Type: application/json' -d '{"title": "GEB", "author": "RH", "text": "Forwards and backwards"}'
 * curl -X GET http://localhost:8080/reviews -H 'Content-Type: application/json'
 * curl -X GET http://localhost:8080/reviews/1 -H 'Content-Type: application/json'
 * curl -X PUT http://localhost:8080/reviews/1 -H 'Content-Type: application/json' -d '{"id" : 1, "title": "GEB", "author": "RH", "text": "Pulitzer"}'
+* curl -X POST http://localhost:8080/reviews -H 'Content-Type: application/json' -d '{"id" : 1, "title": "GEB", "author": "RH", "text": "Pulitzer"}'
 * curl -X POST http://localhost:8080/reviews/1/tags/top10 -H 'Content-Type: application/json'
 * curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
 * curl -X POST http://localhost:8080/reviews/1/tags/top50 -H 'Content-Type: application/json'
 * curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
 * curl -X GET http://localhost:8080/tags/top10 -H 'Content-Type: application/json'
 
-Endpoints
-* GET
-  * /categories --> List all categories
+REST Endpoints
+* GET (readonly)
+  * /categories --> Get a list of all categories
   * /categories/{category_name} --> List all books for a given category
   * /reviews --> List all reviews (QUESTION: is this too much???)
   * /reviews/{review_id} --> The text of a single review

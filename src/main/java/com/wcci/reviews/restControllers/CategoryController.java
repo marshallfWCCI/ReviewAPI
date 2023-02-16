@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
+import java.util.Optional;
 
 // Hey, I'm defining a REST api here
 @RestController
@@ -26,6 +27,9 @@ public class CategoryController {
         return categoryRepository.findAll();
     }
 
+    // The "path" is "/categories"
+    // The "verb" is "POST"
+    // @RequestBody is when an *entire* object, e.g. a Category *object* is being passed from the client.
     @PostMapping("/categories")
     public Category postCategory(final @RequestBody Category category) {
         return categoryRepository.save(category);
@@ -33,6 +37,7 @@ public class CategoryController {
 
     // The path below has a *fixed* part "/categories/" and a *variable* part "{category_id}".
     // The variable part can become a @PathVariable.
+    // PathVariables are basically always either a String or a number
     @GetMapping("/categories/{category_id}")
     public Collection<Review> getCategory(@PathVariable final String category_id) {
         return categoryRepository.findById(category_id)
@@ -42,11 +47,18 @@ public class CategoryController {
                 });
     }
 
+
     @DeleteMapping("/categories/{category_id}")
     public void deleteCategory(@PathVariable final String category_id) {
-        categoryRepository.findById(category_id)
+        // Hey, repository, can you see if there is a record in the Category table matching this category_id
+        // And it says, here's an Optional<Category> which will tell you whether I found one or not.
+        final Optional<Category> perhapsCategory = categoryRepository.findById(category_id);
+
+        perhapsCategory
                 .ifPresentOrElse(
-                        (category) -> categoryRepository.delete(category),
+                        (category) -> { // Yes, we have an actual Category object
+                            categoryRepository.delete(category);
+                        },
                         () -> {
                             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot delete nonexistent category " + category_id);
                         });
