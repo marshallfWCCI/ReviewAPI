@@ -27,7 +27,7 @@ public class Review {
 
     @ManyToMany()
     @JoinTable()
-    private Collection<HashTag> tags = new HashSet<>();
+    private Collection<HashTag> tags = new HashSet<>(); // Set doesn't care about order
 
     public Category getCategory() {
         return category;
@@ -35,10 +35,6 @@ public class Review {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public void removeTag(final HashTag tag) {
-        tags.remove(tag);
     }
 
     // Required by JPA
@@ -66,6 +62,10 @@ public class Review {
 
     public void addTag(final HashTag tag) {
         tags.add(tag);
+    }
+
+    public void removeTag(final HashTag tag) {
+        tags.remove(tag);
     }
 
     public Collection<HashTag> getTags() {

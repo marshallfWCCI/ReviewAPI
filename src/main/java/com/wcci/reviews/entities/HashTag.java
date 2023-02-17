@@ -48,7 +48,7 @@ public class HashTag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HashTag hashTag = (HashTag) o;
-        return name.equals(hashTag.name);
+        return Objects.equals(name, hashTag.name);
     }
 
     @Override

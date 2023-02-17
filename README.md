@@ -1,18 +1,18 @@
 # Sample usage from the bash shell (needs to be verified)
 
 * // Stuff that is after the `-d` shows up as `@RequestBody` in a controller
-* curl -X POST http://localhost:8080/categories -H 'Content-Type: application/json' -d '{"name": "nonfiction", "description": "Purports to correspond to reality"}'
-* curl -X GET http://localhost:8080/categories -H 'Content-Type: application/json'
-* curl -X POST http://localhost:8080/reviews -H 'Content-Type: application/json' -d '{"title": "GEB", "author": "RH", "text": "Forwards and backwards"}'
-* curl -X GET http://localhost:8080/reviews -H 'Content-Type: application/json'
-* curl -X GET http://localhost:8080/reviews/1 -H 'Content-Type: application/json'
-* curl -X PUT http://localhost:8080/reviews/1 -H 'Content-Type: application/json' -d '{"id" : 1, "title": "GEB", "author": "RH", "text": "Pulitzer"}'
-* curl -X POST http://localhost:8080/reviews -H 'Content-Type: application/json' -d '{"id" : 1, "title": "GEB", "author": "RH", "text": "Pulitzer"}'
-* curl -X POST http://localhost:8080/reviews/1/tags/top10 -H 'Content-Type: application/json'
-* curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
-* curl -X POST http://localhost:8080/reviews/1/tags/top50 -H 'Content-Type: application/json'
-* curl -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
-* curl -X GET http://localhost:8080/tags/top10 -H 'Content-Type: application/json'
+* curl -s -X POST http://localhost:8080/categories -H 'Content-Type: application/json' -d '{"name": "nonfiction", "description": "Purports to correspond to reality"}'
+* curl -s -X GET http://localhost:8080/categories -H 'Content-Type: application/json'
+* curl -s -X POST http://localhost:8080/reviews -H 'Content-Type: application/json' -d '{"title": "GEB", "author": "RH", "text": "Forwards and backwards"}'
+* curl -s -X GET http://localhost:8080/reviews -H 'Content-Type: application/json'
+* curl -s -X GET http://localhost:8080/reviews/1 -H 'Content-Type: application/json'
+* curl -s -X PUT http://localhost:8080/reviews/1 -H 'Content-Type: application/json' -d '{"id" : 1, "title": "GEB", "author": "RH", "text": "Pulitzer"}'
+* curl -s -X POST http://localhost:8080/reviews -H 'Content-Type: application/json' -d '{"id" : 1, "title": "GEB", "author": "RH", "text": "Pulitzer"}'
+* curl -s -X POST http://localhost:8080/reviews/1/tags/top10 -H 'Content-Type: application/json'
+* curl -s -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
+* curl -s -X POST http://localhost:8080/reviews/1/tags/top50 -H 'Content-Type: application/json'
+* curl -s -X GET http://localhost:8080/tags -H 'Content-Type: application/json'
+* curl -s -X GET http://localhost:8080/tags/top10 -H 'Content-Type: application/json'
 
 REST Endpoints
 * GET (readonly)
