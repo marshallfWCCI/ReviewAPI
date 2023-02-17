@@ -1,4 +1,4 @@
-# Sample usage from the bash shell
+# Sample usage from the bash shell (needs to be verified)
 
 * // Stuff that is after the `-d` shows up as `@RequestBody` in a controller
 * curl -X POST http://localhost:8080/categories -H 'Content-Type: application/json' -d '{"name": "nonfiction", "description": "Purports to correspond to reality"}'
