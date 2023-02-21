@@ -1,7 +1,7 @@
 # Sample usage from the bash shell (needs to be verified)
 
 * // Stuff that is after the `-d` shows up as `@RequestBody` in a controller
-* curl -s -X POST http://localhost:8080/categories -H 'Content-Type: application/json' -d '{"name": "nonfiction", "description": "Purports to correspond to reality"}'
+* curl -X POST http://localhost:8080/categories -H 'Content-Type: application/json' -d '{"name": "nonfiction", "description": "Purports to correspond to reality"}'
 * curl -s -X GET http://localhost:8080/categories -H 'Content-Type: application/json'
 * curl -s -X POST http://localhost:8080/reviews -H 'Content-Type: application/json' -d '{"title": "GEB", "author": "RH", "text": "Forwards and backwards"}'
 * curl -s -X GET http://localhost:8080/reviews -H 'Content-Type: application/json'
