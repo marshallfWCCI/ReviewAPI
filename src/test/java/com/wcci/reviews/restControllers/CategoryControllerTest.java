@@ -192,6 +192,44 @@ public class CategoryControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{review})));
     }
 
+    @Test
+    public final void addTwoReviews() throws Exception {
+        final Category category = new Category("Football", "Something");
+
+        final Review review1 = new Review(category, "Jimmy",
+                "Football Review", "body");
+        final Review review2 = new Review(category, "Jimmy2",
+                "Football Review2", "body2");
+        //final String withoutId = getJsonContent(review);
+        final Review[] reviews = new Review[]{review1, review2};
+
+        //review.setId(1);
+
+        // Create a review
+        final String r1 = getJsonContent(review1);
+        final String r2 = getJsonContent(review2);
+        review1.setId(1);
+        review2.setId(2);
+        mvc.perform(MockMvcRequestBuilders.post("/reviews")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(r1))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review1)));        // Create a review
+        mvc.perform(MockMvcRequestBuilders.post("/reviews")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(r2))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review2)));
+
+        //GET reviews
+        mvc.perform(MockMvcRequestBuilders.get("/reviews")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(reviews)));
+    }
+
     private static String getJsonContent(Object o) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(o);
     }

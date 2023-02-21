@@ -19,7 +19,6 @@ public class Review {
     private String author;
 
     @ManyToOne()
-    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     private Category category;
 
     @Lob

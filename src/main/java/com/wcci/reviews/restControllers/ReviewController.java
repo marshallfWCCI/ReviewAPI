@@ -1,7 +1,9 @@
 package com.wcci.reviews.restControllers;
 
+import com.wcci.reviews.entities.Category;
 import com.wcci.reviews.entities.HashTag;
 import com.wcci.reviews.entities.Review;
+import com.wcci.reviews.respositories.CategoryRepository;
 import com.wcci.reviews.respositories.HashTagRepository;
 import com.wcci.reviews.respositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +17,15 @@ import java.util.Optional;
 public class ReviewController {
     final ReviewRepository reviewRepository;
     final HashTagRepository tagRepository;
+    final CategoryRepository categoryRepository;
 
     public ReviewController(
             final @Autowired ReviewRepository reviewRepository,
-            final @Autowired HashTagRepository tagRepository) {
+            final @Autowired HashTagRepository tagRepository,
+            final @Autowired CategoryRepository categoryRepository) {
         this.reviewRepository = reviewRepository;
         this.tagRepository = tagRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping("/reviews")
@@ -75,6 +80,8 @@ public class ReviewController {
 
     @PostMapping("/reviews")
     public Review postReview(final @RequestBody Review review) {
+        if (categoryRepository.findById(review.getCategory().getName()).isEmpty())
+            categoryRepository.save(review.getCategory());
         return reviewRepository.save(review);
     }
 
