@@ -21,7 +21,7 @@ public class Category {
 
     // The "mappedBy" really means that the other class is in the driving seat.
     @OneToMany(mappedBy="category")
-    @JsonIgnore
+    @JsonIgnore // This field should *not* be returned in the JSON if someone just wants to return a Category
     private Collection<Review> reviews = new HashSet<>();
 
     public Category(final String categoryName, final String categoryDescription) {

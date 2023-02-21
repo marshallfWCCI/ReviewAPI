@@ -206,22 +206,28 @@ public class CategoryControllerTest {
         //review.setId(1);
 
         // Create a review
-        final String r1 = getJsonContent(review1);
-        final String r2 = getJsonContent(review2);
+        final String reviewWithoutID1 = getJsonContent(review1); // This is the review *without* an ID
         review1.setId(1);
+        final String reviewWithID1 = getJsonContent(review1); // This is the review *with* an ID
+
+        final String r2 = getJsonContent(review2);
         review2.setId(2);
+        final String reviewWithID2 = getJsonContent(review2);
+
+        // Create a new review using POST and then verify that the returned object contains an ID element
         mvc.perform(MockMvcRequestBuilders.post("/reviews")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(r1))
+                        .content(reviewWithoutID1))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review1)));        // Create a review
+                .andExpect(MockMvcResultMatchers.content().json(reviewWithID1));
+
         mvc.perform(MockMvcRequestBuilders.post("/reviews")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(r2))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review2)));
+                .andExpect(MockMvcResultMatchers.content().json(reviewWithID2));
 
         //GET reviews
         mvc.perform(MockMvcRequestBuilders.get("/reviews")
