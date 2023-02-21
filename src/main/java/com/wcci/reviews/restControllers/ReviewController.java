@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 public class ReviewController {
     final ReviewRepository reviewRepository;
     final HashTagRepository tagRepository;

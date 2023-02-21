@@ -13,6 +13,7 @@ import java.util.Optional;
 
 // Hey, I'm defining a REST api here
 @RestController
+@CrossOrigin
 public class CategoryController {
     // A repository is where you store things
     final private CategoryRepository categoryRepository;
