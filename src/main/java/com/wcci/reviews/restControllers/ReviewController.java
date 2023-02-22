@@ -14,13 +14,14 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
+@CrossOrigin // Don't be picky about which javascript is hitting these endpoints
 public class ReviewController {
     final ReviewRepository reviewRepository;
     final HashTagRepository tagRepository;
     final CategoryRepository categoryRepository;
 
     public ReviewController(
+            // The @Autowired is polite but Spring knows it anyway
             final @Autowired ReviewRepository reviewRepository,
             final @Autowired HashTagRepository tagRepository,
             final @Autowired CategoryRepository categoryRepository) {
@@ -32,20 +33,26 @@ public class ReviewController {
     @GetMapping("/reviews")
     public Iterable<Review> getReviews() {
         return reviewRepository.findAll();
+
+        // This doesn't return a List<Review>, but you can pretend it does.
+        // And a List can contain 1 element, or 2, or 100, or zero.
+        // So the special case where there are no reviews doesn't require anything special.
     }
 
     // Hey spring, if you see an endpoint like /reviews/anynumber, use this code
     @GetMapping("/reviews/{review_id}")
     public Review getReviewByID(final @PathVariable long review_id) {
-        return reviewRepository.findById(review_id)
-                .orElseGet(() -> {
-                    throw new ResponseStatusException( HttpStatus.NOT_FOUND, "Cannot find review " + review_id);
-                });
+        final Optional<Review> perhapsReview = reviewRepository.findById(review_id);
+        return perhapsReview
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot find review " + review_id));
+
+        // Lets imagine that /review/1 exists but /review/2 doesn't, what should getReviewByID:
+        // this method should either return an actual Review, or die trying.
     }
 
-    @GetMapping("/reviews/{review_id}/tags")
-    public Optional<Iterable<HashTag>> getTagsForReviewByID(final @PathVariable long review_id) {
-        return reviewRepository.findById(review_id)
+    @GetMapping("/reviews/{oneReviewID}/tags")
+    public Optional<Iterable<HashTag>> getTagsForReviewByID(final @PathVariable long oneReviewID) {
+        return reviewRepository.findById(oneReviewID)
                 .map((review) -> review.getTags());
     }
 
@@ -109,12 +116,9 @@ public class ReviewController {
 
     @DeleteMapping("/reviews/{review_id}")
     public void deleteReview(@PathVariable final long review_id) {
-        reviewRepository.findById(review_id)
-                .ifPresentOrElse(
-                        (review) -> reviewRepository.delete(review),
-                        () -> {
-                            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                    "Cannot delete nonexistent review " + review_id);
-                        });
+        final Review review = reviewRepository.findById(review_id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot delete nonexistent review " + review_id));
+
+        reviewRepository.delete(review);
     }
 }
