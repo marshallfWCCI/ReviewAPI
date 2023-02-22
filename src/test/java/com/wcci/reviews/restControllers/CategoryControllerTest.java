@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -35,7 +36,8 @@ public class CategoryControllerTest {
         // In this case I expect a list of zero categories.
         mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("[]")));
+                .andExpect(content().string(equalTo("[]")))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
@@ -51,7 +53,8 @@ public class CategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON) // I'm expecting JSON back because I'm a program and want recordized date
                         .contentType(MediaType.APPLICATION_JSON) // I'm a program and sending you JSON-encoded data
                         .content(getJsonContent(category)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
@@ -65,7 +68,8 @@ public class CategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonContent(category1)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
 
         // If I do an http POST to /categories and pass in {"name": "Climatology", "description": "Not Happily-ever-after"}
         // then I expect to get an "OK" back.
@@ -73,7 +77,8 @@ public class CategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonContent(category2)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
 
         // At this point, we have two records in MySQL (or something similar)
         // If I do an http GET to /categories, and pass in nothing else, I expect to get
@@ -81,7 +86,8 @@ public class CategoryControllerTest {
         //  {"name": "Climatology", "description": "Not Happily-ever-after"}]
         mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category1, category2})));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category1, category2})))
+                .andDo(MockMvcResultHandlers.print());
 
         // And then if I do an http DELETE to /categories/Romance, I expect to get an OK back
         mvc.perform(MockMvcRequestBuilders.delete("/categories/" + category1.getName()).accept(MediaType.APPLICATION_JSON))
@@ -91,7 +97,8 @@ public class CategoryControllerTest {
         // [{"name": "Climatology", "description": "Not Happily-ever-after"}]
         mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category2})));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category2})))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
@@ -127,18 +134,21 @@ public class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(withoutId))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)))
+                .andDo(MockMvcResultHandlers.print());
 
         // And then find it
         final Review[] reviews = new Review[]{review};
         mvc.perform(MockMvcRequestBuilders.get("/reviews").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(reviews)));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(reviews)))
+                .andDo(MockMvcResultHandlers.print());
 
         // And find it by number
         mvc.perform(MockMvcRequestBuilders.get("/reviews/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)))
+                .andDo(MockMvcResultHandlers.print());
 
         // And then I can use PUT to change the review
         review.setCategory(category);
@@ -146,20 +156,24 @@ public class CategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getJsonContent(review)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
 
         mvc.perform(MockMvcRequestBuilders.get("/reviews/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)))
+                .andDo(MockMvcResultHandlers.print());
 
         // The review starts with no tags
         mvc.perform(MockMvcRequestBuilders.get("/reviews/1/tags").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json("[]"));
+                .andExpect(MockMvcResultMatchers.content().json("[]"))
+                .andDo(MockMvcResultHandlers.print());
 
         mvc.perform(MockMvcRequestBuilders.get("/tags").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json("[]"));
+                .andExpect(MockMvcResultMatchers.content().json("[]"))
+                .andDo(MockMvcResultHandlers.print());
 
         final String tag1 = "best_seller";
         mvc.perform(MockMvcRequestBuilders.post("/reviews/1/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
@@ -169,27 +183,32 @@ public class CategoryControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get("/tags").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new HashTag[]{new HashTag(tag1)})));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new HashTag[]{new HashTag(tag1)})))
+                .andDo(MockMvcResultHandlers.print());
 
         mvc.perform(MockMvcRequestBuilders.get("/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{review})));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{review})))
+                .andDo(MockMvcResultHandlers.print());
 
         mvc.perform(MockMvcRequestBuilders.delete("/reviews/1/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         mvc.perform(MockMvcRequestBuilders.get("/tags/" + tag1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{})));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{})))
+                .andDo(MockMvcResultHandlers.print());
 
         review.removeTag(new HashTag(tag1));
 
         mvc.perform(MockMvcRequestBuilders.get("/categories").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category})));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Category[]{category})))
+                .andDo(MockMvcResultHandlers.print());
 
         mvc.perform(MockMvcRequestBuilders.get("/categories/" + category.getName()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{review})));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(new Review[]{review})))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
@@ -200,12 +219,8 @@ public class CategoryControllerTest {
                 "Football Review", "body");
         final Review review2 = new Review(category, "Jimmy2",
                 "Football Review2", "body2");
-        //final String withoutId = getJsonContent(review);
         final Review[] reviews = new Review[]{review1, review2};
 
-        //review.setId(1);
-
-        // Create a review
         final String reviewWithoutID1 = getJsonContent(review1); // This is the review *without* an ID
         review1.setId(1);
         final String reviewWithID1 = getJsonContent(review1); // This is the review *with* an ID
@@ -220,20 +235,23 @@ public class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(reviewWithoutID1))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(reviewWithID1));
+                .andExpect(MockMvcResultMatchers.content().json(reviewWithID1))
+                .andDo(MockMvcResultHandlers.print());
 
         mvc.perform(MockMvcRequestBuilders.post("/reviews")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(r2))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(reviewWithID2));
+                .andExpect(MockMvcResultMatchers.content().json(reviewWithID2))
+                .andDo(MockMvcResultHandlers.print());
 
         //GET reviews
         mvc.perform(MockMvcRequestBuilders.get("/reviews")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(reviews)));
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(reviews)))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     private static String getJsonContent(Object o) throws JsonProcessingException {
