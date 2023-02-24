@@ -75,13 +75,12 @@ public class ReviewController {
     public void removeTagFromReview(
             final @PathVariable long review_id,
             final @PathVariable String tag_id) throws Exception {
-        final Optional<HashTag> tag = tagRepository.findById(tag_id);
-
-        if (tag.isEmpty()) throw new Exception("Unable to find tag: " + tag_id);
+        final HashTag tag = tagRepository.findById(tag_id)
+                .orElseThrow(() -> new Exception("Unable to find tag: " + tag_id));
 
         final Optional<Review> reviewByID = reviewRepository.findById(review_id);
         reviewByID.map((final Review review) -> {
-            review.removeTag(tag.get());
+            review.removeTag(tag);
             return reviewRepository.save(review);
         });
     }

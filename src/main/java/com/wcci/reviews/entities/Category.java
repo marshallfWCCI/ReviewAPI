@@ -34,6 +34,7 @@ public class Category {
     }
 
     // Note: there is no "addReview(review){}" here.
+    // Each review knows its category and that how we keep track of this info.
 
     public String getName() {
         return name;
