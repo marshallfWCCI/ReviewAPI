@@ -254,6 +254,53 @@ public class CategoryControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    public final void addReviewWithTag() throws Exception {
+        final Category category = new Category("Climatology", "*Not* Happily-ever-after");
+
+        final Review review = new Review(category,
+                "Climate Change 2022: Impacts, Adaptation, and Vulnerability",
+                "IPCC",
+                "I did not think I could be more scared");
+        review.addTag(new HashTag("Do_not_read"));
+        final String withoutId = getJsonContent(review);
+
+        review.setId(1);
+
+        // Create a review
+        mvc.perform(MockMvcRequestBuilders.post("/reviews")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(withoutId))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public final void addReviewWithTag2() throws Exception {
+        final Category category = new Category("Climatology", "*Not* Happily-ever-after");
+
+        final Review review = new Review(category,
+                "Climate Change 2022: Impacts, Adaptation, and Vulnerability",
+                "IPCC",
+                "I did not think I could be more scared");
+        review.addTag(new HashTag("Do_not_read"));
+        review.addTag(new HashTag("Do_not_even_look_at"));
+        final String withoutId = getJsonContent(review);
+
+        review.setId(1);
+
+        // Create a review
+        mvc.perform(MockMvcRequestBuilders.post("/reviews")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(withoutId))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(getJsonContent(review)))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private static String getJsonContent(Object o) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(o);
     }

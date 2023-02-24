@@ -103,6 +103,17 @@ public class ReviewController {
             categoryRepository.save(review.getCategory());
         }
 
+        for (final HashTag tag : review.getTags()) {
+            final String tagName = tag.getName();
+            final Optional<HashTag> perhapsExistingTag = tagRepository.findById(tagName);
+
+            if (perhapsExistingTag.isEmpty()) {
+                // When Review had `@Cascade(org.hibernate.annotations.CascadeType.PERSIST)` on its category field,
+                // this happened *every time* automatically, whether or not the category already existed.
+                tagRepository.save(tag);
+            }
+        }
+
         return reviewRepository.save(review);
     }
 
